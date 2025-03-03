@@ -34,6 +34,12 @@ class AuthRepositories implements AuthRepositoriesInterface
             return ApiResponce::error('Unauthorized',401);
     }
 
+    public function all()
+    {
+        $users = $this->model->latest()->simplePaginate(5);
+        return $users;
+    }
+
     public function logout()
     {
         Auth::logout();

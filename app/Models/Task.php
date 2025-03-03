@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Enums\TaskStatus;
 class Task extends Model
 {
     use HasFactory;
@@ -15,6 +15,9 @@ class Task extends Model
      * @var array<int, string>
      */
     protected $fillable = ['title','status','user_id'];
+    protected $casts = [
+        'status' => TaskStatus::class,
+    ];
 
     /**
      * Get the user that owns the Task

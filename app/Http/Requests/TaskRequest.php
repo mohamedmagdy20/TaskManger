@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TaskStatus;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class TaskRequest extends FormRequest
 {
@@ -11,7 +15,7 @@ class TaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +26,18 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title'=>'required|string',
+            'status'=> Rule::in(TaskStatus::cases()),
+            'user_id'=>'required',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message'=> 'Validation errors',
+            'errors'=> $validator->errors()
+        ],400));
     }
 }

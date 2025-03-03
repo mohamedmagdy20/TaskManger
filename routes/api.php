@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,16 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
 
     Route::group(['controller'=>AuthController::class],function()
     {
+        Route::get('users','all');
         Route::delete('logout','logout');
+    });
+
+    Route::group(['controller'=>TaskController::class,'prefix'=>'tasks'],function()
+    {
+        Route::get('/','index');
+        Route::get('/{id}','show');
+        Route::post('/','store');
+        Route::put('/{id}','update');
+        Route::delete('/{id}','delete');
     });
 });
